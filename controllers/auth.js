@@ -42,15 +42,14 @@ exports.signin = (req, res) => {
 };
 
 exports.signout = (req, res) => {
-
-   //from cookie parser
-   res.clearCookie('t');
+  //from cookie parser
+  res.clearCookie("t");
   res.status(200).json({ success: true, data: {} });
 };
 
 //must hav cookie parser installed
 //protects routes
-exports.requireSignin=expressJwt({
-secret:process.env.JWT_SECRET,
-userProperty:'auth'
-})
+exports.requireSignin = expressJwt({
+  secret: process.env.JWT_SECRET,
+  userProperty: "auth"
+});
