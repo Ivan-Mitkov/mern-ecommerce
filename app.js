@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+
 require("dotenv").config();
 
 const userRoutes = require("./routes/user");
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //cookie parser
 app.use(cookieParser());
+
 //db
 mongoose
   .connect(process.env.DATABASE, {

@@ -7,6 +7,7 @@ exports.signup = (req, res) => {
     if (err) {
       return res.status(400).json({ error: errorHandler(err) });
     }
+    //NOT sending salt and hashed password
     user.salt = undefined;
     user.hashed_password = undefined;
     res.json({
