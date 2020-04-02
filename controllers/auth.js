@@ -43,6 +43,7 @@ exports.signin = (req, res) => {
 
 exports.signout = (req, res) => {
   //from cookie parser
+  req.profile = null;
   res.clearCookie("t");
   res.status(200).json({ success: true, data: {} });
 };
@@ -53,3 +54,25 @@ exports.requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
   userProperty: "auth"
 });
+
+//middleware
+//is authorized so his id when logged is the same as the userId
+exports.isAuth = (req, res, next) => {
+  //req.auth is from expressJwt
+  //if there is user in req object and he is athenticated we have an user
+  let user = req.profile && req.auth && req.profile._id == req.auth._id;
+  console.log("req.profile", req.profile);
+  console.log("req.auth", req.auth);
+  console.log("user", user);
+  if (!user) {
+    return res.status(403).json({ error: "Access denied" });
+  }
+  next();
+};
+exports.isAdmin = (req, res, next) => {
+  //role 0 is for regular user admin has role 1
+  if (req.profile.role === 0) {
+    return res.status(403).json({ error: "Access denied only for admin" });
+  }
+  next();
+};
