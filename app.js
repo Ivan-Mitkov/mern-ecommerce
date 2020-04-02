@@ -5,7 +5,8 @@ const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 
-const userRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 
 const app = express();
 //middleware
@@ -26,6 +27,7 @@ mongoose
   .then(() => console.log("DB connected"));
 
 //routes
+app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 
 const port = process.env.PORT || 8080;
