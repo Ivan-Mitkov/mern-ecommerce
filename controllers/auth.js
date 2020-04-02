@@ -61,9 +61,9 @@ exports.isAuth = (req, res, next) => {
   //req.auth is from expressJwt
   //if there is user in req object and he is athenticated we have an user
   let user = req.profile && req.auth && req.profile._id == req.auth._id;
-  console.log("req.profile", req.profile);
-  console.log("req.auth", req.auth);
-  console.log("user", user);
+  // console.log("req.profile", req.profile);
+  // console.log("req.auth", req.auth);
+  // console.log("user", user);
   if (!user) {
     return res.status(403).json({ error: "Access denied" });
   }

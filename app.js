@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const categoryRoutes = require("./routes/category");
 
 const app = express();
 //middleware
@@ -29,6 +30,7 @@ mongoose
 //routes
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", categoryRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`app listen on port ${port}`));
