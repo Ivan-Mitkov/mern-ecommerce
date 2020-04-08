@@ -126,3 +126,29 @@ exports.create = (req, res) => {
     });
   });
 };
+
+/*
+sort products by query params sell/arival
+
+/product?sortBy=sold&order=desc&limit=4
+/product?sortBy=createdAt&order=desc&limit=4
+if no params are sent all products are returned
+*/
+
+exports.list = (req, res) => {
+  let order = req.query.order ? req.query.order : "asc";
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+  Product.find()
+    .select("-photo")
+    .populate("Category")
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, data) => {
+      if (err) {
+        return res.status(400).json({ error: errorHandler(err) });
+      }
+      res.json({ data });
+    });
+};

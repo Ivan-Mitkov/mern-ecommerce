@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { create, productById, read, remove,update } = require("../controllers/product");
+const {
+  create,
+  productById,
+  read,
+  remove,
+  update,
+  list,
+} = require("../controllers/product");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
 
@@ -21,6 +28,7 @@ router.put(
   isAdmin,
   update
 );
+router.get("/product", list);
 
 //MIDDLEWARES
 //when we have param "userId" we run this middleware and save user in req.profile
