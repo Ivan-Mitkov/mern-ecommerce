@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -18,13 +19,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //cookie parser
 app.use(cookieParser());
+//cors middleware
+app.use(cors());
 
 //db
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
   .then(() => console.log("DB connected"));
 
