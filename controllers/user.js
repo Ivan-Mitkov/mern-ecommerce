@@ -12,5 +12,24 @@ exports.userById = (req, res, next, id) => {
   });
 };
 exports.read = (req, res, next) => {
+  //not sending hashed password and salt
+  req.profile.hashed_password = undefined;
+  req.profile.salt = undefined;
+  return res.json(req.profile);
+};
+exports.update = (req, res, next) => {
   
+  User.findOneAndUpdate(
+    { _id: req.profile._id },
+    { $set: req.body },
+    { new: true },
+    (err, user) => {
+      if (err) {
+        return res.status(400).json({ error: "Not Authorized" });
+      }
+      user.hashed_password = undefined;
+      user.salt = undefined;
+      return res.json(user);
+    }
+  );
 };
