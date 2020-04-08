@@ -1,13 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const { create,categoryById,read } = require("../controllers/category");
+const { create, categoryById, read ,update,remove,list} = require("../controllers/category");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
 
 router.get("/category/:categoryId", read);
+router.get("/category", list);
 
 //only admin can create new category
 router.post("/category/create/:userId", requireSignin, isAuth, isAdmin, create);
+router.put(
+  "/category/:categoryId/:userId",
+  requireSignin,
+  isAuth,
+  isAdmin,
+  update
+);
+router.delete(
+  "/category/:categoryId/:userId",
+  requireSignin,
+  isAuth,
+  isAdmin,
+  remove
+);
 //when we have param "userId" we run this middleware and save user in req.profile
 router.param("userId", userById);
 router.param("categoryId", categoryById);
