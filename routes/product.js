@@ -7,7 +7,9 @@ const {
   remove,
   update,
   list,
-  listRelated
+  listRelated,
+  listCategories,
+  listBySearch
 } = require("../controllers/product");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
@@ -29,9 +31,11 @@ router.put(
   isAdmin,
   update
 );
-router.get("/product", list);
 router.get("/product/related/:productId", listRelated);
-
+router.get("/products/categories", listCategories);
+router.get("/product", list);
+// route - make sure its post
+router.post("/products/by/search", listBySearch);
 //MIDDLEWARES
 //when we have param "userId" we run this middleware and save user in req.profile
 router.param("userId", userById);
