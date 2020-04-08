@@ -152,3 +152,24 @@ exports.list = (req, res) => {
       res.json({ data });
     });
 };
+
+//find products based on req.product.category
+exports.listRelated = (req, res) => {
+  let order = req.query.order ? req.query.order : "asc";
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+  let category = req.product.category;
+
+  //find all related products exept this in req.product
+  Product.find({ _id: { $ne: req.product }, category })
+    .select("-photo")
+    .populate("Category","_id name")
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, data) => {
+      if (err) {
+        return res.status(400).json({ error: errorHandler(err) });
+      }
+      res.json({ data });
+    });
+};
