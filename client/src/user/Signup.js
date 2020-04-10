@@ -22,6 +22,7 @@ const Signup = () => {
     e.preventDefault();
     setValues({ ...values, error: "" });
     // user with name,email,password
+    //make call to backend get data save in state
     signup({ name, email, password })
       .then((data) => {
         if (data.error) {

@@ -22,6 +22,7 @@ const Signin = () => {
     e.preventDefault();
     setValues({ ...values, error: "", loading: true });
     // user with name,email,password
+    //make call to backend get data save in state, redirect
     signin({ email, password })
       .then((data) => {
         if (data.error) {

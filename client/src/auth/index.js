@@ -37,11 +37,30 @@ export const signin = (user) => {
     });
 };
 
-export const authenticate=(data, cb)=>{
-  //check if we got windows object 
-  //local storage is property of browser windows 
-  if(typeof window!==undefined){
-    localStorage.setItem('jwt',JSON.stringify(data));
-    cb()
+export const authenticate = (data, cb) => {
+  //check if we got windows object
+  //local storage is property of browser windows
+  if (typeof window !== undefined) {
+    localStorage.setItem("jwt", JSON.stringify(data));
+    cb();
   }
-}
+};
+
+export const signout = (cb) => {
+  //1.remove token
+  if (typeof window !== undefined) {
+    localStorage.removeItem("jwt");
+    //3.redirect
+    cb();
+    //2.make call to backend
+    return fetch(`${API}/signout`, {
+      method: "GET",
+    })
+      .then((response) => {
+        console.log("Signout", response);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+};

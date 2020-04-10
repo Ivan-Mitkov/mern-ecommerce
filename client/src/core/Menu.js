@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
+import { signout } from "../auth";
 // import { createBrowserHistory } from "history";
 
 const Menu = ({ history }) => {
@@ -11,6 +12,11 @@ const Menu = ({ history }) => {
     }
     return { color: "#ffffee" };
   };
+
+  const handleSignout = () =>
+    signout(() => {
+      history.push("/");
+    });
   return (
     <nav>
       <ul className="nav nav-tabs bg-primary">
@@ -36,6 +42,15 @@ const Menu = ({ history }) => {
           >
             Signup
           </Link>
+        </li>
+        <li>
+          <span
+            className="nav-link"
+            style={{ cursor: "pointer", color: "#ffffee" }}
+            onClick={handleSignout}
+          >
+            Signout
+          </span>
         </li>
       </ul>
     </nav>
