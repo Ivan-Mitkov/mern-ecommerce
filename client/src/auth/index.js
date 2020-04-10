@@ -36,3 +36,12 @@ export const signin = (user) => {
       console.log(err.message);
     });
 };
+
+export const authenticate=(data, cb)=>{
+  //check if we got windows object 
+  //local storage is property of browser windows 
+  if(typeof window!==undefined){
+    localStorage.setItem('jwt',JSON.stringify(data));
+    cb()
+  }
+}
