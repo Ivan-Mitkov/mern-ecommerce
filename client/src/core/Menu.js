@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { signout } from "../auth";
+import { signout, isAutenticated } from "../auth";
 // import { createBrowserHistory } from "history";
 
 const Menu = ({ history }) => {
@@ -17,6 +17,44 @@ const Menu = ({ history }) => {
     signout(() => {
       history.push("/");
     });
+
+  const privateRoutes = () => {
+    if (!isAutenticated()) {
+      return (
+        <>
+          <li>
+            <Link
+              className="nav-link"
+              to="/signin"
+              style={isActive(history, "/signin")}
+            >
+              Signin
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="nav-link"
+              to="/signup"
+              style={isActive(history, "/signup")}
+            >
+              Signup
+            </Link>
+          </li>
+        </>
+      );
+    }
+    return (
+      <li>
+        <span
+          className="nav-link"
+          style={{ cursor: "pointer", color: "#ffffee" }}
+          onClick={handleSignout}
+        >
+          Signout
+        </span>
+      </li>
+    );
+  };
   return (
     <nav>
       <ul className="nav nav-tabs bg-primary">
@@ -25,33 +63,7 @@ const Menu = ({ history }) => {
             Home
           </Link>
         </li>
-        <li>
-          <Link
-            className="nav-link"
-            to="/signin"
-            style={isActive(history, "/signin")}
-          >
-            Signin
-          </Link>
-        </li>
-        <li>
-          <Link
-            className="nav-link"
-            to="/signup"
-            style={isActive(history, "/signup")}
-          >
-            Signup
-          </Link>
-        </li>
-        <li>
-          <span
-            className="nav-link"
-            style={{ cursor: "pointer", color: "#ffffee" }}
-            onClick={handleSignout}
-          >
-            Signout
-          </span>
-        </li>
+        {privateRoutes()}
       </ul>
     </nav>
   );
