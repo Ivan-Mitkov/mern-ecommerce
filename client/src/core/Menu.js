@@ -55,6 +55,37 @@ const Menu = ({ history }) => {
       </li>
     );
   };
+  const adminRoutes = () => {
+    if (isAutenticated() && isAutenticated().user.role === 1) {
+      return (
+        <>
+          <li className="nav-item">
+            <Link
+              className="nav-link"
+              style={isActive(history, "/admin/dashboard")}
+              to="/admin/dashboard"
+            >
+              Admin Dashboard
+            </Link>
+          </li>
+        </>
+      );
+    } else if(isAutenticated()) {
+      return (
+        <>
+          <li className="nav-item">
+            <Link
+              className="nav-link"
+              style={isActive(history, "/user/dashboard")}
+              to="/user/dashboard"
+            >
+              Dashboard
+            </Link>
+          </li>
+        </>
+      );
+    }
+  };
   return (
     <nav>
       <ul className="nav nav-tabs bg-primary">
@@ -63,16 +94,8 @@ const Menu = ({ history }) => {
             Home
           </Link>
         </li>
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            style={isActive(history, "/user/dashboard")}
-            to="/user/dashboard"
-          >
-            Dashboard
-          </Link>
-        </li>
         {privateRoutes()}
+        {adminRoutes()}
       </ul>
     </nav>
   );

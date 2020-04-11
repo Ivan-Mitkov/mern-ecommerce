@@ -101,6 +101,9 @@ const Signin = () => {
       }
       return <Redirect to="/user/dashboard" />;
     }
+    if (isAutenticated()) {
+      return <Redirect to="/" />;
+    }
   };
   return (
     <Layout
