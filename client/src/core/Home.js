@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
+import Card from "./Card";
 import { getProducts } from "./apiCore";
 
 const Home = () => {
@@ -8,8 +9,8 @@ const Home = () => {
   const [error, setError] = useState(false);
 
   const loadProductsBySell = () => {
-    getProducts("sold").then(({data}) => {
-      console.log(data)
+    getProducts("sold").then(({ data }) => {
+      console.log(data);
       if (data.error) {
         setError(data.error);
       } else {
@@ -19,7 +20,7 @@ const Home = () => {
   };
 
   const loadProductsByArrival = () => {
-    getProducts("createdAt").then(({data}) => {
+    getProducts("createdAt").then(({ data }) => {
       console.log(data);
       if (data.error) {
         setError(data.error);
@@ -40,23 +41,17 @@ const Home = () => {
       description="Node React E-commerce App"
       className="container-fluid"
     >
-     
       <h2 className="mb-4">New Arrivals</h2>
       <div className="row">
         {productsByArrival.map((product, i) => (
-          <div key={i} className="col-4 mb-3">
-            
-            <div>{product.name} </div>
-          </div>
+          <Card key={i} product={product} className="col-4 mb-3"></Card>
         ))}
       </div>
 
       <h2 className="mb-4">Best Sellers</h2>
       <div className="row">
         {productsBySell.map((product, i) => (
-          <div key={i} className="col-4 mb-3">
-             <div>{product.name} </div>
-          </div>
+          <Card key={i} product={product} className="col-4 mb-3"></Card>
         ))}
       </div>
     </Layout>
