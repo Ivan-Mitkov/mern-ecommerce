@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-const Checkbox = ({ categories }) => {
+const Checkbox = ({ categories,handleFilters }) => {
   const [checked, setChecked] = useState([]);
+
+  //Handle checkbox
   const handleToggle = (c) => () => {
     //find if category in state
     //return first index or -1
@@ -17,6 +19,8 @@ const Checkbox = ({ categories }) => {
     }
     console.log(newCheckedCategoryId);
     setChecked(newCheckedCategoryId);
+    //send filters to the parent element
+    handleFilters(newCheckedCategoryId)
   };
   return categories.map((c, i) => (
     <li key={i} className="list-unstyled">
