@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Checkbox = ({ categories,handleFilters }) => {
+const Checkbox = ({ categories, handleFilters }) => {
   const [checked, setChecked] = useState([]);
 
   //Handle checkbox
@@ -18,9 +18,10 @@ const Checkbox = ({ categories,handleFilters }) => {
       newCheckedCategoryId.splice(currentCategoryId, 1);
     }
     console.log(newCheckedCategoryId);
+    //save in this component
     setChecked(newCheckedCategoryId);
-    //send filters to the parent element
-    handleFilters(newCheckedCategoryId)
+    //send filters to the parent element and save in it's state
+    handleFilters(newCheckedCategoryId);
   };
   return categories.map((c, i) => (
     <li key={i} className="list-unstyled">
