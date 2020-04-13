@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import Card from "./Card";
 import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
-import { getCategories } from "./apiCore";
+import { getCategories, getFilteredProducts } from "./apiCore";
 import { prices } from "./fixedPrices";
 
 const Shop = () => {
@@ -12,7 +12,10 @@ const Shop = () => {
   });
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
-
+  const [limit, setLimit] = useState(6);
+  const [skip, setSkip] = useState(0);
+  const [size, setSize] = useState(0);
+  const [filteredResults, setFilteredResults] = useState([]);
   // load categories and set form data
   const init = () => {
     getCategories().then((data) => {
@@ -25,8 +28,25 @@ const Shop = () => {
   };
   useEffect(() => {
     init();
+    //show initial search results when page mounts
+    loadFilteredResults(skip, limit, myFilters.filters)
   }, []);
 
+  //sending filters to the backend
+  const loadFilteredResults = (newFilters) => {
+    // console.log(newFilters);
+    //get results from backend
+    getFilteredProducts(skip, limit, newFilters).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        console.log(data);
+        setFilteredResults(data);
+        setSize(data.size);
+        setSkip(0);
+      }
+    });
+  };
   //format data from price array, extract data using key
   const handlePrice = (value) => {
     const data = prices;
@@ -56,6 +76,7 @@ const Shop = () => {
       //get value of the array using it's key and save the array in state
       newFilters.filters[filterBy] = priceValues;
     }
+    loadFilteredResults(myFilters.filters);
     //change state
     setMyFilters(newFilters);
     //this filter object will be send to the backend
@@ -81,7 +102,7 @@ const Shop = () => {
             handleFilters={(filters) => handleFilters(filters, "price")}
           />
         </div>
-        <div className="col-8">{JSON.stringify(myFilters)}</div>
+        <div className="col-8">{JSON.stringify(filteredResults)}</div>
       </div>
     </Layout>
   );

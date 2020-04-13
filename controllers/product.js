@@ -237,6 +237,7 @@ exports.listBySearch = (req, res) => {
           error: "Products not found",
         });
       }
+
       res.json({
         size: data.length,
         data,
