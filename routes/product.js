@@ -10,6 +10,7 @@ const {
   listRelated,
   listCategories,
   listBySearch,
+  listSearch,
   showPhoto,
 } = require("../controllers/product");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
@@ -44,5 +45,7 @@ router.get("/product/photo/:productId", showPhoto);
 router.param("userId", userById);
 //when we have param "productId" we run this middleware and save user in req.product
 router.param("productId", productById);
+//home page search
+router.get("/products/search", listSearch);
 
 module.exports = router;

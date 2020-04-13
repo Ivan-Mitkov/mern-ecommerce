@@ -1,4 +1,5 @@
 import { API } from "../config";
+import queryString from "query-string";
 
 // router.get("/product", list);
 export const getProducts = (sortBy) => {
@@ -51,4 +52,17 @@ export const getFilteredProducts = (skip, limit, filters = {}) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+//router.get("/products/search", listSearch);
+export const list = (params) => {
+  const query = queryString.stringify(params);
+  // console.log("query", query);
+  return fetch(`${API}/products/search?${query}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => new Error(err));
 };
