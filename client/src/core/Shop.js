@@ -12,7 +12,7 @@ const Shop = () => {
   });
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(3);
   const [skip, setSkip] = useState(0);
   const [size, setSize] = useState(0);
   const [filteredResults, setFilteredResults] = useState([]);
@@ -41,11 +41,42 @@ const Shop = () => {
         setError(data.error);
       } else {
         // console.log(data);
-        setFilteredResults(data);
+        setFilteredResults(data.data);
         setSize(data.size);
         setSkip(0);
       }
     });
+  };
+
+  //pagination
+  const loadMore = () => {
+    let toSkip = skip + limit;
+    // console.log(newFilters);
+    getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
+      // console.log("data", filteredResults);
+      if (data.error) {
+        setError(data.error);
+      } else {
+        //load all
+        // setFilteredResults([...filteredResults, ...data.data]);
+        // load next page
+        setFilteredResults([...data.data]);
+        setSize(data.size);
+        setSkip(toSkip);
+      }
+    });
+  };
+
+  const loadMoreButton = () => {
+    // console.log(size," ", limit)
+    return (
+      size > 0 &&
+      size >= limit && (
+        <button onClick={loadMore} className="btn btn-warning mb-5">
+          Load more
+        </button>
+      )
+    );
   };
   //format data from price array, extract data using key
   const handlePrice = (value) => {
@@ -106,11 +137,12 @@ const Shop = () => {
           {" "}
           <h2 className="mb-4">Products</h2>
           <div className="row">
-            {filteredResults.data &&
-              filteredResults.data.map((product, i) => (
+            {filteredResults &&
+              filteredResults.map((product, i) => (
                 <Card key={product._id} product={product} />
               ))}
           </div>
+          {loadMoreButton()}
           <hr />
         </div>
       </div>
