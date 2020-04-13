@@ -10,7 +10,7 @@ const Card = ({ product }) => {
         <div className="card-body">
           {/* router.get("/product/photo/:productId", showPhoto); */}
           <ShowImage item={product} url="product" />
-          <p>{product.description}</p>
+          <p>{product.description.split(" ").slice(0, 10).join(" ")}</p>
           <p>${product.price}</p>
           <Link to="/">
             <button className="btn btn-outline-primary mt-2 mb-2 mr-2">

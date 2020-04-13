@@ -17,7 +17,7 @@ const Checkbox = ({ categories, handleFilters }) => {
     } else {
       newCheckedCategoryId.splice(currentCategoryId, 1);
     }
-    console.log(newCheckedCategoryId);
+    // console.log(newCheckedCategoryId);
     //save in this component
     setChecked(newCheckedCategoryId);
     //send filters to the parent element and save in it's state

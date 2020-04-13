@@ -29,7 +29,7 @@ const Shop = () => {
   useEffect(() => {
     init();
     //show initial search results when page mounts
-    loadFilteredResults(skip, limit, myFilters.filters)
+    loadFilteredResults(skip, limit, myFilters.filters);
   }, []);
 
   //sending filters to the backend
@@ -40,7 +40,7 @@ const Shop = () => {
       if (data.error) {
         setError(data.error);
       } else {
-        console.log(data);
+        // console.log(data);
         setFilteredResults(data);
         setSize(data.size);
         setSkip(0);
@@ -102,7 +102,17 @@ const Shop = () => {
             handleFilters={(filters) => handleFilters(filters, "price")}
           />
         </div>
-        <div className="col-8">{JSON.stringify(filteredResults)}</div>
+        <div className="col-8">
+          {" "}
+          <h2 className="mb-4">Products</h2>
+          <div className="row">
+            {filteredResults.data &&
+              filteredResults.data.map((product, i) => (
+                <Card key={product._id} product={product} />
+              ))}
+          </div>
+          <hr />
+        </div>
       </div>
     </Layout>
   );
