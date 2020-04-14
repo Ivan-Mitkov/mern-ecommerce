@@ -24,6 +24,7 @@ const Search = () => {
   };
   useEffect(() => {
     loadCategories();
+    // eslint-disable-next-line
   }, []);
   // useEffect(() => {
   //   console.log(data);
@@ -82,7 +83,7 @@ const Search = () => {
       </span>
     </form>
   );
-  const searchMessage = (searched, results=[]) => {
+  const searchMessage = (searched, results = []) => {
     if (searched && results.length > 0) {
       return `Found ${results.length} products`;
     }

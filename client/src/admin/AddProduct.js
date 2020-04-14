@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Layout from "../core/Layout";
 import { isAutenticated } from "../auth/index";
 import { createProduct, getCategories } from "./apiAdmin";
@@ -28,14 +27,10 @@ const AddProduct = () => {
     description,
     price,
     categories,
-    category,
-    shipping,
     quantity,
-    sold,
     loading,
     error,
     createdProduct,
-    redirectToProfile,
     formData,
   } = values;
   // load categories and set form data
@@ -55,6 +50,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     init();
+    // eslint-disable-next-line
   }, []);
   const handleChange = (name) => (event) => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
@@ -69,7 +65,7 @@ const AddProduct = () => {
 
     //1.create product
     createProduct(user._id, token, formData).then((data) => {
-        console.log(data)
+      console.log(data);
       //2.if there is error set error
       if (data.error) {
         setValues({ ...values, error: data.error });
@@ -82,7 +78,7 @@ const AddProduct = () => {
           photo: "",
           price: "",
           quantity: "",
-          categories: [ ],
+          categories: [],
           shipping: "Please Select",
           loading: false,
           createdProduct: data.data.name,

@@ -5,7 +5,7 @@ import { isAutenticated } from "../auth/index";
 
 const UserDashboard = () => {
   const {
-    user: { _id, name, email, role },
+    user: {  name, email, role },
   } = isAutenticated();
   const userLinks = () => {
     return (

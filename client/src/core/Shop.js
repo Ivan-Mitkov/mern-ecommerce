@@ -11,7 +11,9 @@ const Shop = () => {
     filters: { category: [], price: [] },
   });
   const [categories, setCategories] = useState([]);
+  // eslint-disable-next-line
   const [error, setError] = useState("");
+  // eslint-disable-next-line
   const [limit, setLimit] = useState(3);
   const [skip, setSkip] = useState(0);
   const [size, setSize] = useState(0);
@@ -30,6 +32,7 @@ const Shop = () => {
     init();
     //show initial search results when page mounts
     loadFilteredResults(skip, limit, myFilters.filters);
+    // eslint-disable-next-line
   }, []);
 
   //sending filters to the backend
