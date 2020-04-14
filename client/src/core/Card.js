@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import moment from "moment";
 import ShowImage from "./ShowImage";
 
@@ -21,6 +21,17 @@ const Card = ({ product, hideViewProductButton }) => {
       <span className="badge badge-primary badge-pill">Out of Stock </span>
     );
   };
+
+  const viewProduct = (productId) => {
+    const linkInButton = (
+      <Link to={`/product/${productId}`}>
+        <button className="btn btn-outline-primary mt-2 mb-2 mr-2">
+          View Product
+        </button>
+      </Link>
+    );
+    return hideViewProductButton ? null : linkInButton;
+  };
   return (
     <div className="card">
       <div className="card-header name">{product.name}</div>
@@ -40,14 +51,8 @@ const Card = ({ product, hideViewProductButton }) => {
 
         {showStock(product.quantity)}
         <br />
-        {hideViewProductButton ? null : (
-          <Link to={`/product/${product._id}`}>
-            <button className="btn btn-outline-primary mt-2 mb-2 mr-2">
-              View Product
-            </button>
-          </Link>
-        )}
 
+        {viewProduct(product._id)}
         {showAddtoCardButton()}
       </div>
     </div>

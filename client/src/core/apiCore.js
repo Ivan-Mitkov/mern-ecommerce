@@ -77,3 +77,15 @@ export const list = (params) => {
     })
     .catch((err) => new Error(err));
 };
+
+//router.get("/product/related/:productId", listRelated);
+export const listRelated = (productId) => {
+  return fetch(`${API}/product/related/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      // console.log(response.json())
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
