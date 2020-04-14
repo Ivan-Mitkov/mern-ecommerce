@@ -39,13 +39,13 @@ router.get("/product", list);
 // route - make sure its post
 router.post("/products/by/search", listBySearch);
 router.get("/product/photo/:productId", showPhoto);
+//home page search
+router.get("/products/search", listSearch);
 
 //MIDDLEWARES
 //when we have param "userId" we run this middleware and save user in req.profile
 router.param("userId", userById);
 //when we have param "productId" we run this middleware and save user in req.product
 router.param("productId", productById);
-//home page search
-router.get("/products/search", listSearch);
 
 module.exports = router;

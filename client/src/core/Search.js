@@ -101,7 +101,9 @@ const Search = () => {
 
         <div className="row">
           {results.map((product, i) => (
-            <Card key={i} product={product} />
+            <div className="col-4 mb-3" key={product._id}>
+              <Card product={product}></Card>
+            </div>
           ))}
         </div>
       </div>

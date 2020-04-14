@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import ShowImage from "./ShowImage";
 
 const Card = ({ product }) => {
+  
   return (
-    <div className="col-4 mb-3">
+   
       <div className="card">
         <div className="card-header">{product.name}</div>
         <div className="card-body">
@@ -12,7 +13,7 @@ const Card = ({ product }) => {
           <ShowImage item={product} url="product" />
           <p>{product.description.split(" ").slice(0, 10).join(" ")}</p>
           <p>${product.price}</p>
-          <Link to="/">
+          <Link to={`/product/${product._id}`}>
             <button className="btn btn-outline-primary mt-2 mb-2 mr-2">
               View Product
             </button>
@@ -24,7 +25,7 @@ const Card = ({ product }) => {
           </Link>
         </div>
       </div>
-    </div>
+   
   );
 };
 

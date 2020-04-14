@@ -142,7 +142,9 @@ const Shop = () => {
           <div className="row">
             {filteredResults &&
               filteredResults.map((product, i) => (
-                <Card key={product._id} product={product} />
+                <div className="col-4 mb-3" key={product._id} >
+                  <Card product={product}></Card>
+                </div>
               ))}
           </div>
           {loadMoreButton()}

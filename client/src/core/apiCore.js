@@ -12,6 +12,17 @@ export const getProducts = (sortBy) => {
     })
     .catch((err) => console.log(err));
 };
+// router.get("/product/productId", list);
+export const read = (productId) => {
+  return fetch(`${API}/product/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      // console.log(response.json())
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
 
 //router.get("/category", list);
 export const getCategories = () => {
