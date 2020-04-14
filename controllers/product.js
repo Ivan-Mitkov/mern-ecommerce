@@ -7,14 +7,16 @@ const { errorHandler } = require("../helpers/dbErrorHadler");
 //Middleware to save product in req object, like user
 exports.productById = (req, res, next, id) => {
   //id is from params
-  Product.findById(id).exec((err, product) => {
-    if (err || !product) {
-      return res.status(400).json({ error: "Product not found" });
-    }
-    //if there is product save it in req object
-    req.product = product;
-    return next();
-  });
+  Product.findById(id)
+    .populate("category")
+    .exec((err, product) => {
+      if (err || !product) {
+        return res.status(400).json({ error: "Product not found" });
+      }
+      //if there is product save it in req object
+      req.product = product;
+      return next();
+    });
 };
 //Get product photo as middleware
 exports.showPhoto = (req, res, next) => {
@@ -245,27 +247,26 @@ exports.listBySearch = (req, res) => {
     });
 };
 
-
 exports.listSearch = (req, res) => {
   // create query object to hold search value and category value
   const query = {};
   // if we get search assign search value to query.name
   if (req.query.search) {
     //https://docs.mongodb.com/manual/reference/operator/query/regex/
-      query.name = { $regex: req.query.search, $options: 'i' };
-      // assign category value to query.category
-      if (req.query.category && req.query.category != 'All') {
-          query.category = req.query.category;
+    query.name = { $regex: req.query.search, $options: "i" };
+    // assign category value to query.category
+    if (req.query.category && req.query.category != "All") {
+      query.category = req.query.category;
+    }
+    // find the product based on query object with 2 properties
+    // search and category
+    Product.find(query, (err, products) => {
+      if (err) {
+        return res.status(400).json({
+          error: errorHandler(err),
+        });
       }
-      // find the product based on query object with 2 properties
-      // search and category
-      Product.find(query, (err, products) => {
-          if (err) {
-              return res.status(400).json({
-                  error: errorHandler(err)
-              });
-          }
-          res.json(products);
-      }).select('-photo');
+      res.json(products);
+    }).select("-photo");
   }
 };

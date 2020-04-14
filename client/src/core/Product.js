@@ -37,8 +37,11 @@ const Product = (props) => {
       }`}
       className="container-fluid"
     >
-     
-      <div className="row">{product.description&&<Card product={product}/>}</div>
+      <div className="row">
+        {product.description && (
+          <Card product={product} hideViewProductButton={true} />
+        )}
+      </div>
     </Layout>
   );
 };
