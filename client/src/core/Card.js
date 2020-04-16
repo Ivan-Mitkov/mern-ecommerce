@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import moment from "moment";
 import ShowImage from "./ShowImage";
+import { addItem } from "./cartHelpers";
 
 const Card = ({ product, hideViewProductButton }) => {
+  const [redirect, setRedirect] = useState(false);
+
+  const addToCart = () => {
+    addItem(product, () => {
+      setRedirect(true);
+    });
+  };
+  const shouldRedirect = (redirect) => {
+    if (redirect) {
+      return <Redirect to="/cart" />;
+    }
+  };
   const showAddtoCardButton = () => {
     return (
       <Link to="/">
-        <button className="btn btn-outline-warning mt-2 mb-2">
+        <button
+          onClick={addToCart}
+          className="btn btn-outline-warning mt-2 mb-2"
+        >
           Add to cart
         </button>
       </Link>
@@ -36,6 +52,7 @@ const Card = ({ product, hideViewProductButton }) => {
     <div className="card">
       <div className="card-header name">{product.name}</div>
       <div className="card-body">
+        {shouldRedirect(redirect)}
         {/* router.get("/product/photo/:productId", showPhoto); */}
         <ShowImage item={product} url="product" />
         <p className="lead mt-2">
