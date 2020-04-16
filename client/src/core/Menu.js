@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signout, isAutenticated } from "../auth";
+import { itemTotal } from "./cartHelpers";
 // import { createBrowserHistory } from "history";
 
 const Menu = ({ history }) => {
@@ -70,7 +71,7 @@ const Menu = ({ history }) => {
           </li>
         </>
       );
-    } else if(isAutenticated()) {
+    } else if (isAutenticated()) {
       return (
         <>
           <li className="nav-item">
@@ -95,8 +96,24 @@ const Menu = ({ history }) => {
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" style={isActive(history, "/shop")} to="/shop">
+          <Link
+            className="nav-link"
+            style={isActive(history, "/shop")}
+            to="/shop"
+          >
             Shop
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            style={isActive(history, "/cart")}
+            to="/cart"
+          >
+            Cart{" "}
+            <sup >
+              <small className="cart-badge">{itemTotal()}</small>
+            </sup>
           </Link>
         </li>
         {privateRoutes()}
