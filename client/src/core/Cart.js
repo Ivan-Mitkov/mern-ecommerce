@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Layout from "./Layout";
 import Card from "./Card";
+import Checkout from './Checkout';
 import { getCart,removeItem } from "./cartHelpers";
 
 const Cart = () => {
@@ -56,7 +57,7 @@ const Cart = () => {
         <div className="col-6">
           <h2 className="mb-4">Your Cart Summary</h2>
           <hr />
-          <p>Show checkout options</p>
+          <Checkout products={items}/>
         </div>
       </div>
     </Layout>
