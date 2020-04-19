@@ -3,15 +3,16 @@ import { Link, Redirect } from "react-router-dom";
 
 import Layout from "./Layout";
 import Card from "./Card";
-import { getCart } from "./cartHelpers";
+import { getCart,removeItem } from "./cartHelpers";
 
 const Cart = () => {
   const [items, setItems] = useState([]);
-
+  const [run, setRun] = useState(false);
   useEffect(() => {
     console.log("MAX DEPTH ...");
     setItems(getCart());
-  }, []);
+  }, [run]);
+
 
   const showItems = (items) => {
     return (
@@ -25,8 +26,8 @@ const Cart = () => {
             showAddToCartButton={false}
             cartUpdate={true}
             showRemoveProductButton={true}
-            // setRun={setRun}
-            // run={run}
+            setRun={setRun}
+            run={run}
             // changeCartSize={changeCartSize}
           />
         ))}

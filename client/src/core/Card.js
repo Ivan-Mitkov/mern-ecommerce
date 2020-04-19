@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import moment from "moment";
 import ShowImage from "./ShowImage";
-import { addItem,updateItem } from "./cartHelpers";
+import { addItem, updateItem, removeItem } from "./cartHelpers";
 
 const Card = ({
   product,
   hideViewProductButton,
   showAddToCartButton = true,
   cartUpdate = false,
+  showRemoveProductButton = false,
+  setRun = (f) => f, // default value of function
+  run = undefined, // default value of undefined
 }) => {
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(product.count);
@@ -18,6 +21,7 @@ const Card = ({
       setRedirect(true);
     });
   };
+
   const shouldRedirect = (redirect) => {
     if (redirect) {
       return <Redirect to="/cart" />;
@@ -32,6 +36,23 @@ const Card = ({
             className="btn btn-outline-warning mt-2 mb-2"
           >
             Add to cart
+          </button>
+        </Link>
+      )
+    );
+  };
+  const showRemoveButton = (showRemoveProductButton) => {
+    return (
+      showRemoveProductButton && (
+        <Link to="/cart">
+          <button
+            onClick={() => {
+              removeItem(product._id);
+              setRun(!run); // run useEffect in parent Cart
+            }}
+            className="btn btn-outline-danger mt-2 mb-2"
+          >
+            Remove from cart
           </button>
         </Link>
       )
@@ -58,9 +79,10 @@ const Card = ({
   };
 
   const handleCountChange = (productId) => (event) => {
+    setRun(!run); // run useEffect in parent Cart
     setCount(event.target.value < 1 ? 1 : event.target.value);
-    if(event.target.value>=1){
-      updateItem(productId,event.target.value)
+    if (event.target.value >= 1) {
+      updateItem(productId, event.target.value);
     }
   };
 
@@ -105,6 +127,7 @@ const Card = ({
         {viewProduct(product._id)}
         {showAddtoCard(showAddToCartButton)}
         {showCartUpdateOptions(cartUpdate)}
+        {showRemoveButton(showRemoveProductButton)}
       </div>
     </div>
   );
