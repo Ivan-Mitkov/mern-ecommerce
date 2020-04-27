@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
 
-import { getBraintreeClientToken, processPayment } from "./apiCore";
+import {
+  getBraintreeClientToken,
+  processPayment,
+  createOrder,
+} from "./apiCore";
 import { emptyCart } from "./cartHelpers";
 import { isAutenticated } from "../auth";
 
@@ -52,14 +56,20 @@ const Checkout = ({ products }) => {
       processPayment(userId, token, paymentData)
         .then((response) => {
           console.log(response);
-          setData({ ...data, success: response.success });
+          //create order
+          const createOrderData = {
+            products: products,
+            transaction_id: response.transaction.id,
+            amount: response.transaction.amount,
+            address: data.address,
+          };
+          createOrder(userId, token, createOrderData);
           //empty cart
+          setData({ ...data, success: response.success });
           emptyCart(() => {
             console.log("payment success, cart empty");
             setData({ ...data, loading: false });
           });
-
-          //create order
         })
         .catch((err) => {
           console.log(err);
@@ -68,6 +78,9 @@ const Checkout = ({ products }) => {
     });
   };
 
+  const handleAddress = (event) => {
+    setData({ ...data, address: event.target.value });
+  };
   const showDropIn = () => (
     <div onBlur={() => setData({ ...data, error: "" })}>
       {data.clientToken && products.length > 0 ? (
@@ -82,6 +95,18 @@ const Checkout = ({ products }) => {
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
+          <div className="gorm-group mb-3">
+            <label htmlFor="" className="text-muted">
+              Delivery Address
+            </label>
+            <textarea
+              className="form-control"
+              value={data.address}
+              placeholder="Delivery Address"
+              onChange={handleAddress}
+              rows="3"
+            />
+          </div>
           <button onClick={buy} className="btn btn-success btn-block">
             Checkout
           </button>
