@@ -4,7 +4,7 @@ import DropIn from "braintree-web-drop-in-react";
 
 import Layout from "./Layout";
 import Card from "./Card";
-import { getBraintreeClientToken } from "./apiCore";
+import { getBraintreeClientToken, getProducts } from "./apiCore";
 import { isAutenticated } from "../auth";
 
 const Checkout = ({ products }) => {
@@ -29,9 +29,31 @@ const Checkout = ({ products }) => {
       }
     });
   };
+  const buy = () => {
+    //nonce = data.instance.requestPaymentMethod()
+    //send the nonce to the server
+    let nonce = null;
+    let getNonce = data.instance
+      .requestPaymentMethod()
+      .then((data) => {
+        console.log(data);
+        nonce = data.nonce;
+        //once we have nonce (card type, card number) send nonce as 'paymentMethodNonce'
+        //send total to be charged
+        console.log(
+          "send nonce and total to process",
+          nonce,
+          getTotal(products)
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        setData({ ...data, error: err.message });
+      });
+  };
 
   const showDropIn = () => (
-    <div>
+    <div onBlur={() => setData({ ...data, error: "" })}>
       {data.clientToken && products.length > 0 ? (
         <div>
           <DropIn
@@ -40,7 +62,9 @@ const Checkout = ({ products }) => {
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
-          <button className="btn btn-success">Checkout</button>
+          <button onClick={buy} className="btn btn-success">
+            Checkout
+          </button>
         </div>
       ) : null}
     </div>
@@ -61,16 +85,28 @@ const Checkout = ({ products }) => {
 
   const showCheckout = () => {
     return isAutenticated() ? (
-    <div >{showDropIn()}</div>
+      <div>{showDropIn()}</div>
     ) : (
       <Link to="/signin">
         <button className="btn btn-primary">Sign in to checkout</button>
       </Link>
     );
   };
+
+  const showError = (error) => {
+    return (
+      <div
+        className="alert alert-danger"
+        style={{ display: error ? "" : "none" }}
+      >
+        {error}
+      </div>
+    );
+  };
   return (
     <div>
       <h2>Total :{getTotal()}</h2>
+      {showError(data.error)}
       {showCheckout()}
     </div>
   );
