@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
 
-import Layout from "./Layout";
-import Card from "./Card";
-import { getBraintreeClientToken, getProducts } from "./apiCore";
+import { getBraintreeClientToken, processPayment } from "./apiCore";
+import { emptyCart } from "./cartHelpers";
 import { isAutenticated } from "../auth";
 
 const Checkout = ({ products }) => {
   //https://www.npmjs.com/package/braintree-web-drop-in-react
   const [data, setData] = useState({
+    loading: false,
     success: false,
     clientToken: null,
     error: "",
@@ -25,31 +25,47 @@ const Checkout = ({ products }) => {
       if (data.error) {
         setData({ ...data, error: data.error });
       } else {
-        setData({ ...data, clientToken: data.clientToken });
+        setData({ clientToken: data.clientToken });
       }
     });
   };
   const buy = () => {
     //nonce = data.instance.requestPaymentMethod()
     //send the nonce to the server
+    setData({ ...data, loading: true });
+
     let nonce = null;
-    let getNonce = data.instance
-      .requestPaymentMethod()
-      .then((data) => {
-        console.log(data);
-        nonce = data.nonce;
-        //once we have nonce (card type, card number) send nonce as 'paymentMethodNonce'
-        //send total to be charged
-        console.log(
-          "send nonce and total to process",
-          nonce,
-          getTotal(products)
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        setData({ ...data, error: err.message });
-      });
+    let getNonce = data.instance.requestPaymentMethod().then((data) => {
+      console.log(data);
+      nonce = data.nonce;
+      // //once we have nonce (card type, card number) send nonce as 'paymentMethodNonce'
+      // //send total to be charged
+      // console.log(
+      //   "send nonce and total to process",
+      //   nonce,
+      //   getTotal(products)
+      // );
+      const paymentData = {
+        paymentMethodNonce: nonce,
+        amount: getTotal(products),
+      };
+      processPayment(userId, token, paymentData)
+        .then((response) => {
+          console.log(response);
+          setData({ ...data, success: response.success });
+          //empty cart
+          emptyCart(() => {
+            console.log("payment success, cart empty");
+            setData({ ...data, loading: false });
+          });
+
+          //create order
+        })
+        .catch((err) => {
+          console.log(err);
+          setData({ ...data, error: err.message, loading: false });
+        });
+    });
   };
 
   const showDropIn = () => (
@@ -59,10 +75,14 @@ const Checkout = ({ products }) => {
           <DropIn
             options={{
               authorization: data.clientToken,
+              //https://sandbox.braintreegateway.com/merchants/5fwrc8hyqph4kmpr/paypal
+              paypal: {
+                flow: "vault",
+              },
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
-          <button onClick={buy} className="btn btn-success">
+          <button onClick={buy} className="btn btn-success btn-block">
             Checkout
           </button>
         </div>
@@ -74,7 +94,7 @@ const Checkout = ({ products }) => {
     getToken(userId, token);
   }, []);
   useEffect(() => {
-    console.log(data);
+    console.log("state.data: ", data);
   }, [data]);
 
   const getTotal = () => {
@@ -103,9 +123,24 @@ const Checkout = ({ products }) => {
       </div>
     );
   };
+  const showSuccess = (success) => {
+    return (
+      <div
+        className="alert alert-info"
+        style={{ display: success ? "" : "none" }}
+      >
+        Thanks! Your payment was successfull
+      </div>
+    );
+  };
+  const showLoading = (loading) => {
+    return loading && <h2>Loading...</h2>;
+  };
   return (
     <div>
       <h2>Total :{getTotal()}</h2>
+      {showLoading(data.loading)}
+      {showSuccess(data.success)}
       {showError(data.error)}
       {showCheckout()}
     </div>
