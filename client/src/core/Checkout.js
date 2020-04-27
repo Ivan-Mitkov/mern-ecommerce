@@ -33,7 +33,9 @@ const Checkout = ({ products }) => {
       }
     });
   };
+
   const buy = () => {
+    let deliveryAddress = data.address;
     //nonce = data.instance.requestPaymentMethod()
     //send the nonce to the server
     setData({ ...data, loading: true });
@@ -61,14 +63,14 @@ const Checkout = ({ products }) => {
             products: products,
             transaction_id: response.transaction.id,
             amount: response.transaction.amount,
-            address: data.address,
+            address: deliveryAddress,
           };
-          createOrder(userId, token, createOrderData);
-          //empty cart
-          setData({ ...data, success: response.success });
-          emptyCart(() => {
-            console.log("payment success, cart empty");
-            setData({ ...data, loading: false });
+          createOrder(userId, token, createOrderData).then((response) => {
+            //empty cart
+            emptyCart(() => {
+              console.log("payment success, cart empty");
+              setData({ ...data, loading: false, success: true });
+            });
           });
         })
         .catch((err) => {
@@ -123,9 +125,10 @@ const Checkout = ({ products }) => {
   }, [data]);
 
   const getTotal = () => {
-    return products.reduce((c, n) => {
-      return c + n.count * n.price;
+    const sum = products.reduce((c, n) => {
+      return c + parseFloat(n.count) * parseFloat(n.price);
     }, 0);
+    return parseFloat(sum.toFixed(2));
   };
 
   const showCheckout = () => {
