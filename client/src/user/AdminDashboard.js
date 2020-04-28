@@ -5,7 +5,7 @@ import { isAutenticated } from "../auth/index";
 
 const AdminDashboard = () => {
   const {
-    user: {  name, email, role },
+    user: { name, email, role },
   } = isAutenticated();
   const adminLinks = () => {
     return (
@@ -21,6 +21,12 @@ const AdminDashboard = () => {
             {" "}
             <Link className="nav-link" to="/create/product">
               Create Product
+            </Link>
+          </li>
+          <li className="list-group-item">
+            {" "}
+            <Link className="nav-link" to="/admin/orders">
+              Orders{" "}
             </Link>
           </li>
         </ul>

@@ -48,7 +48,22 @@ export const getCategories = () => {
     method: "GET",
   })
     .then((response) => {
-        // console.log(response.json())
+      // console.log(response.json())
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+//router.get("/order/list/:userId", list);
+export const listOrders = (userId, token) => {
+  return fetch(`${API}/order/list/${userId}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      // console.log(response.json())
       return response.json();
     })
     .catch((err) => console.log(err));
