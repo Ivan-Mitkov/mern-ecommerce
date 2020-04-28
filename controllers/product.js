@@ -270,3 +270,32 @@ exports.listSearch = (req, res) => {
     }).select("-photo");
   }
 };
+exports.decreaseQuantity = (req, res, next) => {
+  const bulkOps = req.body.order.products.map((item) => {
+    return {
+      updateOne: {
+        filter: {
+          _id: item._id,
+        },
+        //https://docs.mongodb.com/manual/reference/operator/update/inc/
+        update: {
+          $inc: { quantity: -item.count, sold: +item.count },
+        },
+      },
+    };
+  });
+  //https://mongoosejs.com/docs/api.html#model_Model.bulkWrite
+  //Sends multiple insertOne, updateOne, updateMany, replaceOne, deleteOne,
+  //and/or deleteMany operations to the MongoDB server in one command.
+  // This is faster than sending multiple independent operations (e.g. if you use create())
+  // because with bulkWrite() there is only one round trip to MongoDB.
+  // Mongoose will perform casting on all operations you provide.
+  // This function does not trigger any middleware, neither save(), nor update().
+  // If you need to trigger save() middleware for every document use create() instead.
+  Product.bulkWrite(bulkOps, {}, (err, products) => {
+    if (err) {
+      return res.status(400).json({ error: "Could not update product" });
+    }
+    next();
+  });
+};
