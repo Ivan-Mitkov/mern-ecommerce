@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import Layout from "../core/Layout";
 import { isAutenticated } from "../auth/index";
-import { listOrders, getStatusValues } from "./apiAdmin";
+import { listOrders, getStatusValues, updateOrderStatus } from "./apiAdmin";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -51,7 +51,17 @@ const Orders = () => {
   };
 
   const handleStatusChange = (event, orderId) => {
-    console.log("update order status");
+      console.log(event.target.value)
+    updateOrderStatus(user._id, token, orderId, event.target.value).then(
+      (data) => {
+        if (data.error) {
+          console.log("Status update failed");
+          return;
+        } else {
+          loadOrders();
+        }
+      }
+    );
   };
   const showStatus = (o) => {
     return (
@@ -59,12 +69,13 @@ const Orders = () => {
         <h3 className="mark mb-4">Status:{o.status}</h3>
         <select
           className="form-control"
+          name='status'
           onChange={(e) => handleStatusChange(e, o._id)}
         >
           <option>Update Status</option>
           {statusValues.map((status, i) => {
             return (
-              <option key={i} value={status}>
+              <option key={i} value={status} name={status}>
                 {status}
               </option>
             );
@@ -74,8 +85,8 @@ const Orders = () => {
     );
   };
 
-  const showOrders = (orders) => {
-    console.log(orders);
+  const showOrders = () => {
+    // console.log(orders);
     const ordersList = orders.map((order, i) => {
       return (
         <div
@@ -128,7 +139,7 @@ const Orders = () => {
       <div className="row">
         <div className="col-md-8 offset-md-2">
           {showOrdersLength(orders)}
-          {showOrders(orders)}
+          {showOrders()}
         </div>
       </div>
     </Layout>
