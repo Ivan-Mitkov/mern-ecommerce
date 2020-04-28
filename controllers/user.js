@@ -18,7 +18,6 @@ exports.read = (req, res, next) => {
   return res.json(req.profile);
 };
 exports.update = (req, res, next) => {
-  
   User.findOneAndUpdate(
     { _id: req.profile._id },
     { $set: req.body },
@@ -30,6 +29,31 @@ exports.update = (req, res, next) => {
       user.hashed_password = undefined;
       user.salt = undefined;
       return res.json(user);
+    }
+  );
+};
+exports.addOrderToUserHistory = (req, res, next) => {
+  const history = [];
+  req.body.order.products.forEach((p) =>
+    history.push({
+      _id: p._id,
+      name: p.name,
+      description: p.description,
+      category: p.category,
+      quantity: p.count,
+      transaction_id: req.body.order.transaction_id,
+      amount: req.body.order.amount,
+    })
+  );
+  User.findOneAndUpdate(
+    { _id: req.profile._id },
+    { $push: { history: history } },
+    { new: true },
+    (err, data) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
+      next();
     }
   );
 };
