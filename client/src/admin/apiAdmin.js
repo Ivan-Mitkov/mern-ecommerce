@@ -68,3 +68,18 @@ export const listOrders = (userId, token) => {
     })
     .catch((err) => console.log(err));
 };
+//router.get("/order/status-values/:userId", list);
+export const getStatusValues = (userId, token) => {
+  return fetch(`${API}/order/status-values/${userId}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      // console.log(response.json())
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
