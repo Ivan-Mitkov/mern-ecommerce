@@ -98,3 +98,63 @@ export const updateOrderStatus = (userId, token, orderId, status) => {
     })
     .catch((err) => console.log(err));
 };
+
+//get all products
+//router.get("/product", list);
+export const getProducts = () => {
+  return fetch(`${API}/product?limit=undefined`, {
+    method: "GET",  
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+//get single product
+//router.get("/product/:productId", read);
+export const getSingleProduct = (productId) => {
+  return fetch(`${API}/product/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+//delete product
+//router.delete("/product/:productId/:userId",requireSignin,isAuth, isAdmin,remove);
+export const deleteProduct = (productId, userId, token) => {
+  return fetch(`${API}/product/${productId}/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+//router.put(  "/product/:productId/:userId",  requireSignin,  isAuth,  isAdmin,  update);
+export const updateProduct = (productId,userId, token, product) => {
+  return fetch(`${API}/product/${productId}/${userId}`, {
+    method: "PUT",
+    // mode: 'cors',
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    //can't send js object
+    body: product,
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+};

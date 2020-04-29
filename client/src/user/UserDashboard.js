@@ -7,7 +7,7 @@ import { getPurchaseHistory } from "./apiUser";
 
 const UserDashboard = () => {
   const [history, setHistory] = useState([]);
-  console.log(isAutenticated());
+  // console.log(isAutenticated());
   const {
     user: { _id, name, email, role },
     token,
