@@ -9,6 +9,7 @@ import Dashboard from "./user/UserDashboard";
 import AdminDashboard from "./user/AdminDashboard";
 import AddCategory from "./admin/AddCategory";
 import AddProduct from "./admin/AddProduct";
+import UpdateProduct from "./admin/UpdateProduct";
 import Orders from "./admin/Orders";
 import ManageProducts from "./admin/ManageProducts";
 import Shop from "./core/Shop";
@@ -29,6 +30,11 @@ const Routes = () => {
         <AdminRoute component={AdminDashboard} exact path="/admin/dashboard" />
         <AdminRoute component={AddCategory} exact path="/create/category" />
         <AdminRoute component={AddProduct} exact path="/create/product" />
+        <AdminRoute
+          component={UpdateProduct}
+          exact
+          path="/admin/product/update/:productId"
+        />
         <AdminRoute component={ManageProducts} exact path="/admin/products" />
         <AdminRoute component={Orders} exact path="/admin/orders" />
         <Route exact path="/product/:productId" component={Product} />

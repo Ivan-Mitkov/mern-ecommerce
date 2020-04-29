@@ -55,17 +55,17 @@ exports.update = (req, res) => {
     }
 
     //check for all fields
-    const { name, description, price, quantity, shipping, category } = fields;
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !quantity ||
-      !shipping ||
-      !category
-    ) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
+    // const { name, description, price, quantity, shipping, category } = fields;
+    // if (
+    //   !name ||
+    //   // !description ||
+    //   !price
+    //   // !quantity ||
+    //   // !shipping ||
+    //   // !category
+    // ) {
+    //   return res.status(400).json({ error: "All fields are required" });
+    // }
     //Get product from req object
     let product = req.product;
     //put all data using lodash extend we can use {...} but for change
