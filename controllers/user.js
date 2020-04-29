@@ -11,6 +11,8 @@ exports.userById = (req, res, next, id) => {
     next();
   });
 };
+
+//middleware save user in req object so when there is userId we are reading user from req
 exports.read = (req, res, next) => {
   //not sending hashed password and salt
   req.profile.hashed_password = undefined;

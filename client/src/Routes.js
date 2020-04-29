@@ -13,6 +13,7 @@ import Orders from "./admin/Orders";
 import Shop from "./core/Shop";
 import Product from "./core/Product";
 import Cart from "./core/Cart";
+import Profile from "./user/Profile";
 
 const Routes = () => {
   return (
@@ -23,13 +24,13 @@ const Routes = () => {
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/signup" component={Signup} />
         <PrivateRoute component={Dashboard} exact path="/user/dashboard" />
+        <PrivateRoute component={Profile} exact path="/profile/:userId" />
         <AdminRoute component={AdminDashboard} exact path="/admin/dashboard" />
         <AdminRoute component={AddCategory} exact path="/create/category" />
         <AdminRoute component={AddProduct} exact path="/create/product" />
         <AdminRoute component={Orders} exact path="/admin/orders" />
         <Route exact path="/product/:productId" component={Product} />
         <Route exact path="/cart" component={Cart} />
-
       </Switch>
     </BrowserRouter>
   );

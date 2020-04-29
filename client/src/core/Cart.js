@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import Card from "./Card";
 import Checkout from './Checkout';
+// eslint-disable-next-line
 import { getCart,removeItem } from "./cartHelpers";
 
 const Cart = () => {

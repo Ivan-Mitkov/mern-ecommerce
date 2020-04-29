@@ -6,6 +6,7 @@ import { read, listRelated } from "./apiCore";
 const Product = (props) => {
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  // eslint-disable-next-line
   const [error, setError] = useState("");
 
   //first we need to fetch Single product in order to find productId, then fetch related
@@ -41,6 +42,7 @@ const Product = (props) => {
   
   useEffect(() => {
     console.log(relatedProducts);
+    // eslint-disable-next-line
   }, [relatedProducts]);
 
   return (

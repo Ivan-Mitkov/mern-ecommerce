@@ -37,6 +37,7 @@ export const signin = (user) => {
     });
 };
 
+//save user in localStorage
 export const authenticate = (data, cb) => {
   //check if we got windows object
   //local storage is property of browser windows
@@ -65,6 +66,7 @@ export const signout = (cb) => {
   }
 };
 
+//get user from localstorage jwt
 export const isAutenticated = () => {
   if (typeof window === undefined) {
     return false;

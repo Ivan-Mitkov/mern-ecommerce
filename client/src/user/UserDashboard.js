@@ -5,7 +5,7 @@ import { isAutenticated } from "../auth/index";
 
 const UserDashboard = () => {
   const {
-    user: {  name, email, role },
+    user: {_id,  name, email, role },
   } = isAutenticated();
   const userLinks = () => {
     return (
@@ -19,7 +19,7 @@ const UserDashboard = () => {
           </li>
           <li className="list-group-item">
             {" "}
-            <Link className="nav-link" to="/profile/update">
+            <Link className="nav-link" to={`/profile/${_id}`}>
               Profile Update
             </Link>
           </li>
